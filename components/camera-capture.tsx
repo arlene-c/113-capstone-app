@@ -1,15 +1,15 @@
 import { Colors } from '@/constants/theme';
 import { Ionicons } from '@expo/vector-icons';
-import { Camera } from 'expo-camera';
+import { Camera, CameraView } from 'expo-camera';
 import React, { useRef, useState } from 'react';
 import {
-    ActivityIndicator,
-    Alert,
-    Modal,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  ActivityIndicator,
+  Alert,
+  Modal,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 
 type CameraCaptureProps = {
@@ -23,7 +23,7 @@ export const CameraCapture: React.FC<CameraCaptureProps> = ({
   onCapture,
   onClose,
 }) => {
-  const cameraRef = useRef<Camera>(null);
+  const cameraRef = useRef<CameraView>(null);
   const [cameraPermission, setCameraPermission] = useState<boolean | null>(null);
   const [isCapturing, setIsCapturing] = useState(false);
 
@@ -97,11 +97,10 @@ export const CameraCapture: React.FC<CameraCaptureProps> = ({
   return (
     <Modal visible={visible} animationType="slide">
       <View style={styles.cameraContainer}>
-        <Camera
+        <CameraView
           ref={cameraRef}
           style={styles.camera}
-          type={CameraType.front}
-          ratio="16:9"
+          facing="front"
         />
 
         <View style={styles.controls}>

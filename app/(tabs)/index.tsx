@@ -1,98 +1,234 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
-
-import { HelloWave } from '@/components/hello-wave';
-import ParallaxScrollView from '@/components/parallax-scroll-view';
 import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { Link } from 'expo-router';
+import { Colors } from '@/constants/theme';
+import { Ionicons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
+import { SafeAreaView, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 
 export default function HomeScreen() {
-  return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <Link href="/modal">
-          <Link.Trigger>
-            <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-          </Link.Trigger>
-          <Link.Preview />
-          <Link.Menu>
-            <Link.MenuAction title="Action" icon="cube" onPress={() => alert('Action pressed')} />
-            <Link.MenuAction
-              title="Share"
-              icon="square.and.arrow.up"
-              onPress={() => alert('Share pressed')}
-            />
-            <Link.Menu title="More" icon="ellipsis">
-              <Link.MenuAction
-                title="Delete"
-                icon="trash"
-                destructive
-                onPress={() => alert('Delete pressed')}
-              />
-            </Link.Menu>
-          </Link.Menu>
-        </Link>
+  const router = useRouter();
 
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+  return (
+    <SafeAreaView style={styles.safeArea}>
+      <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+        {/* Header */}
+        <View style={styles.header}>
+          <ThemedText type="title" style={styles.mainTitle}>ASL Translator</ThemedText>
+          <ThemedText style={styles.subtitle}>
+            Breaking communication barriers through sign language translation
+          </ThemedText>
+        </View>
+
+        {/* Main Features Grid */}
+        <View style={styles.featuresContainer}>
+          {/* ASL to English Card */}
+          <TouchableOpacity
+            style={styles.featureCard}
+            onPress={() => router.push('/asl-translation')}
+            activeOpacity={0.8}
+          >
+            <View style={styles.cardHeader}>
+              <View style={styles.iconContainer}>
+                <Ionicons name="hand-left" size={40} color={Colors.light.background} />
+              </View>
+              <ThemedText type="subtitle" style={styles.cardTitle}>
+                ASL → English
+              </ThemedText>
+            </View>
+            <ThemedText style={styles.cardDescription}>
+              Translate fingerspelling and signs to English text. Start by showing the camera a sign.
+            </ThemedText>
+            <View style={styles.cardFooter}>
+              <ThemedText style={styles.cardLabel}>Take a picture or video</ThemedText>
+              <Ionicons name="chevron-forward" size={20} color={Colors.light.background} />
+            </View>
+          </TouchableOpacity>
+
+          {/* English to ASL Card (Coming Soon) */}
+          <TouchableOpacity
+            style={[styles.featureCard, styles.comingSoonCard]}
+            disabled
+            activeOpacity={0.6}
+          >
+            <View style={styles.cardHeader}>
+              <View style={[styles.iconContainer, styles.disabledIcon]}>
+                <Ionicons name="text" size={40} color={Colors.light.background} />
+              </View>
+              <ThemedText type="subtitle" style={styles.cardTitle}>
+                English → ASL
+              </ThemedText>
+            </View>
+            <ThemedText style={styles.cardDescription}>
+              Enter English text and see the corresponding ASL sign animation.
+            </ThemedText>
+            <View style={[styles.cardFooter, styles.comingSoonFooter]}>
+              <ThemedText style={styles.comingSoonLabel}>Coming Soon</ThemedText>
+            </View>
+          </TouchableOpacity>
+        </View>
+
+        {/* Info Section */}
+        <View style={styles.infoSection}>
+          <View style={styles.infoCard}>
+            <Ionicons name="lightbulb" size={24} color={Colors.light.tint} />
+            <View style={styles.infoContent}>
+              <ThemedText type="subtitle" style={styles.infoTitle}>Current Focus</ThemedText>
+              <ThemedText style={styles.infoText}>
+                This prototype focuses on fingerspelling detection. Each letter of the ASL alphabet is recognized through hand position detection.
+              </ThemedText>
+            </View>
+          </View>
+
+          <View style={styles.infoCard}>
+            <Ionicons name="shield-checkmark" size={24} color={Colors.light.tint} />
+            <View style={styles.infoContent}>
+              <ThemedText type="subtitle" style={styles.infoTitle}>Privacy</ThemedText>
+              <ThemedText style={styles.infoText}>
+                All image processing happens on your device. No images are sent to external servers.
+              </ThemedText>
+            </View>
+          </View>
+        </View>
+
+        {/* Footer */}
+        <View style={styles.footer}>
+          <ThemedText style={styles.footerText}>
+            Dedicated to breaking communication barriers and promoting accessibility for Deaf individuals.
+          </ThemedText>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
+  safeArea: {
+    flex: 1,
+    backgroundColor: Colors.light.background,
   },
-  stepContainer: {
-    gap: 8,
+  container: {
+    flex: 1,
+    paddingHorizontal: 16,
+    paddingVertical: 16,
+  },
+  header: {
+    marginBottom: 32,
+  },
+  mainTitle: {
+    fontSize: 32,
+    fontWeight: '900',
+    color: Colors.light.text,
     marginBottom: 8,
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
+  subtitle: {
+    fontSize: 14,
+    color: '#666',
+    lineHeight: 20,
+  },
+  featuresContainer: {
+    marginBottom: 32,
+    gap: 16,
+  },
+  featureCard: {
+    backgroundColor: Colors.light.tint,
+    borderRadius: 20,
+    padding: 20,
+    minHeight: 240,
+    justifyContent: 'space-between',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  comingSoonCard: {
+    backgroundColor: '#D0D0D0',
+    opacity: 0.7,
+  },
+  cardHeader: {
+    marginBottom: 16,
+  },
+  iconContainer: {
+    width: 64,
+    height: 64,
+    borderRadius: 16,
+    backgroundColor: 'rgba(255, 255, 255, 0.3)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  disabledIcon: {
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+  },
+  cardTitle: {
+    color: Colors.light.background,
+    fontSize: 20,
+    fontWeight: '700',
+  },
+  cardDescription: {
+    color: 'rgba(255, 255, 255, 0.9)',
+    fontSize: 13,
+    lineHeight: 18,
+    marginBottom: 16,
+  },
+  cardFooter: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  cardLabel: {
+    color: 'rgba(255, 255, 255, 0.8)',
+    fontSize: 12,
+    fontWeight: '500',
+  },
+  comingSoonFooter: {
+    justifyContent: 'center',
+  },
+  comingSoonLabel: {
+    color: Colors.light.background,
+    fontSize: 13,
+    fontWeight: '600',
+  },
+  infoSection: {
+    marginBottom: 32,
+    gap: 12,
+  },
+  infoCard: {
+    flexDirection: 'row',
+    backgroundColor: 'rgba(168, 213, 186, 0.15)',
+    borderRadius: 16,
+    padding: 16,
+    gap: 12,
+    alignItems: 'flex-start',
+  },
+  infoContent: {
+    flex: 1,
+  },
+  infoTitle: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: Colors.light.text,
+    marginBottom: 4,
+  },
+  infoText: {
+    fontSize: 13,
+    color: '#555',
+    lineHeight: 18,
+  },
+  footer: {
+    paddingVertical: 20,
+    paddingHorizontal: 12,
+    backgroundColor: 'rgba(168, 213, 186, 0.1)',
+    borderRadius: 12,
+    marginBottom: 20,
+  },
+  footerText: {
+    fontSize: 12,
+    color: '#666',
+    textAlign: 'center',
+    lineHeight: 16,
+    fontWeight: '500',
   },
 });

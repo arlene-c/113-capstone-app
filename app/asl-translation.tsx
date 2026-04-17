@@ -152,7 +152,7 @@ export default function ASLTranslationScreen() {
                 4. The app will detect the letter
               </Text>
               <Text style={styles.demoNotice}>
-                Note: This prototype uses demo detection logic and may not reflect real letters.
+                This app uses image analysis to recognize ASL fingerspelling letters in real-time.
               </Text>
             </View>
 
@@ -160,6 +160,7 @@ export default function ASLTranslationScreen() {
               <TouchableOpacity
                 style={styles.actionButton}
                 onPress={() => setCameraVisible(true)}
+                disabled={isProcessing}
               >
                 <View style={styles.buttonIconContainer}>
                   <Ionicons name="camera" size={32} color={Colors.light.background} />
@@ -279,6 +280,18 @@ const styles = StyleSheet.create({
     color: Colors.light.gray500,
     textAlign: 'center',
     fontStyle: 'italic',
+  },
+  modelStatus: {
+    marginTop: 10,
+    fontSize: 12,
+    color: Colors.light.tint,
+    textAlign: 'center',
+  },
+  modelError: {
+    marginTop: 10,
+    fontSize: 12,
+    color: '#FF6B6B',
+    textAlign: 'center',
   },
   buttonGrid: {
     flexDirection: 'row',

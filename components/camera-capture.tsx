@@ -28,11 +28,23 @@ export const CameraCapture: React.FC<CameraCaptureProps> = ({
   const [isCapturing, setIsCapturing] = useState(false);
 
   React.useEffect(() => {
+    if (!visible) {
+      setCameraPermission(null);
+      return;
+    }
+
+    let isMounted = true;
     (async () => {
       const { status } = await Camera.requestCameraPermissionsAsync();
-      setCameraPermission(status === 'granted');
+      if (isMounted) {
+        setCameraPermission(status === 'granted');
+      }
     })();
-  }, []);
+
+    return () => {
+      isMounted = false;
+    };
+  }, [visible]);
 
   const handleCapture = async () => {
     if (!cameraRef.current || !cameraPermission) return;

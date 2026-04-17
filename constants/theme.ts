@@ -20,6 +20,10 @@ export const Colors = {
     icon: pastelGreen,
     tabIconDefault: pastelGreen,
     tabIconSelected: darkGreen,
+    gray100: '#F8F8F8',
+    gray200: '#E0E0E0',
+    gray300: '#D9D9D9',
+    gray500: '#666666',
   },
   dark: {
     text: white,
@@ -28,6 +32,10 @@ export const Colors = {
     icon: pastelGreen,
     tabIconDefault: pastelGreen,
     tabIconSelected: pastelGreen,
+    gray100: '#2A2A2A',
+    gray200: '#3A3A3A',
+    gray300: '#4A4A4A',
+    gray500: '#BBBBBB',
   },
 };
 

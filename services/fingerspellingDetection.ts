@@ -7,7 +7,7 @@
  */
 
 export type DetectionResult = {
-  letter: string;
+  detectedLetter: string;
   confidence: number;
   error?: string;
 };
@@ -48,12 +48,12 @@ export async function detectFingerspellingFromImage(
     const confidence = 0.85 + Math.random() * 0.15; // 85-100% confidence for demo
 
     return {
-      letter: randomLetter,
+      detectedLetter: randomLetter,
       confidence: parseFloat(confidence.toFixed(2)),
     };
   } catch (error) {
     return {
-      letter: '?',
+      detectedLetter: '?',
       confidence: 0,
       error: error instanceof Error ? error.message : 'Detection failed',
     };

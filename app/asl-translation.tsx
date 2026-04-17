@@ -22,6 +22,7 @@ import {
 
 const HISTORY_KEY = 'asl_detection_history';
 const MAX_HISTORY_ITEMS = 20;
+const SAVE_CONFIDENCE_THRESHOLD = 0.6;
 
 export default function ASLTranslationScreen() {
   const router = useRouter();
@@ -57,24 +58,28 @@ export default function ASLTranslationScreen() {
   };
 
   const handleCameraCapture = async (imageUri: string) => {
+    if (!imageUri || typeof imageUri !== 'string' || !imageUri.startsWith('file://')) {
+      Alert.alert('Invalid image', 'Captured image could not be processed. Please try again.');
+      return;
+    }
+
     try {
       setIsProcessing(true);
 
-      // Process the captured image
       const result = await detectFingerspellingFromImage(imageUri);
       setCurrentResult(result);
 
-      // Save to history if successful detection
-      if (result.letter !== '?' && result.confidence > 0.5) {
-        await saveToHistory(result.letter);
+      if (result.detectedLetter !== '?' && result.confidence >= SAVE_CONFIDENCE_THRESHOLD) {
+        await saveToHistory(result.detectedLetter);
       }
     } catch (error) {
-      console.error('Detection error:', error);
-      Alert.alert('Error', 'Failed to process image. Please try again.');
+      const errorMessage = error instanceof Error ? error.message : 'Failed to process image';
+      console.error('Detection error:', errorMessage);
+      Alert.alert('Error', errorMessage);
       setCurrentResult({
-        letter: '?',
+        detectedLetter: '?',
         confidence: 0,
-        error: 'Failed to process image',
+        error: errorMessage,
       });
     } finally {
       setIsProcessing(false);
@@ -145,6 +150,9 @@ export default function ASLTranslationScreen() {
                 2. Show your fingerspelling letter clearly{'\n'}
                 3. Tap the camera button to capture{'\n'}
                 4. The app will detect the letter
+              </Text>
+              <Text style={styles.demoNotice}>
+                Note: This prototype uses demo detection logic and may not reflect real letters.
               </Text>
             </View>
 
@@ -224,7 +232,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 12,
     borderBottomWidth: 1,
-    borderBottomColor: '#F0F0F0',
+    borderBottomColor: Colors.light.gray200,
   },
   headerTitle: {
     fontSize: 18,
@@ -246,7 +254,7 @@ const styles = StyleSheet.create({
     color: Colors.light.text,
   },
   instructionCard: {
-    backgroundColor: '#F8F8F8',
+    backgroundColor: Colors.light.gray100,
     borderRadius: 16,
     padding: 20,
     marginBottom: 24,
@@ -261,9 +269,16 @@ const styles = StyleSheet.create({
   },
   instructionText: {
     fontSize: 14,
-    color: '#666',
+    color: Colors.light.gray500,
     lineHeight: 20,
     textAlign: 'left',
+  },
+  demoNotice: {
+    marginTop: 12,
+    fontSize: 12,
+    color: Colors.light.gray500,
+    textAlign: 'center',
+    fontStyle: 'italic',
   },
   buttonGrid: {
     flexDirection: 'row',
@@ -303,7 +318,7 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   historyCard: {
-    backgroundColor: '#F8F8F8',
+    backgroundColor: Colors.light.gray100,
     borderRadius: 16,
     padding: 16,
     marginBottom: 24,
@@ -355,7 +370,7 @@ const styles = StyleSheet.create({
   infoText: {
     flex: 1,
     fontSize: 13,
-    color: '#555',
+    color: Colors.light.gray500,
     lineHeight: 18,
   },
 });

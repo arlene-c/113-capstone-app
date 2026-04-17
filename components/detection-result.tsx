@@ -18,7 +18,7 @@ export const DetectionResultDisplay: React.FC<DetectionResultDisplayProps> = ({
   const scaleAnim = React.useRef(new Animated.Value(0)).current;
 
   React.useEffect(() => {
-    if (result && result.letter !== '?') {
+    if (result && result.detectedLetter !== '?') {
       Animated.spring(scaleAnim, {
         toValue: 1,
         useNativeDriver: true,
@@ -28,7 +28,7 @@ export const DetectionResultDisplay: React.FC<DetectionResultDisplayProps> = ({
 
   if (!result) return null;
 
-  const isError = result.letter === '?' || result.error;
+  const isError = result.detectedLetter === '?' || result.error;
   const confidenceLevel = getConfidenceLevel(result.confidence);
   const confidencePercent = (result.confidence * 100).toFixed(0);
 
@@ -53,7 +53,7 @@ export const DetectionResultDisplay: React.FC<DetectionResultDisplayProps> = ({
                 },
               ]}
             >
-              <Text style={styles.detectedLetter}>{result.letter}</Text>
+              <Text style={styles.detectedLetter}>{result.detectedLetter}</Text>
             </Animated.View>
 
             <View style={styles.confidenceContainer}>
@@ -74,7 +74,7 @@ export const DetectionResultDisplay: React.FC<DetectionResultDisplayProps> = ({
               </Text>
             </View>
 
-            <Text style={styles.letterName}>The letter is: {result.letter}</Text>
+            <Text style={styles.letterName}>The letter is: {result.detectedLetter}</Text>
           </>
         )}
 
@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
   },
   confidenceBarContainer: {
     height: 8,
-    backgroundColor: '#E0E0E0',
+    backgroundColor: Colors.light.gray200,
     borderRadius: 4,
     overflow: 'hidden',
     marginBottom: 8,
@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
   },
   confidenceText: {
     fontSize: 12,
-    color: '#666',
+    color: Colors.light.gray500,
   },
   letterName: {
     fontSize: 16,
@@ -178,7 +178,7 @@ const styles = StyleSheet.create({
   },
   errorMessage: {
     fontSize: 14,
-    color: '#666',
+    color: Colors.light.gray500,
     textAlign: 'center',
     marginBottom: 24,
   },
@@ -200,9 +200,9 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.light.tint,
   },
   clearButton: {
-    backgroundColor: '#F0F0F0',
+    backgroundColor: Colors.light.gray100,
     borderWidth: 1,
-    borderColor: '#E0E0E0',
+    borderColor: Colors.light.gray200,
   },
   buttonText: {
     fontWeight: '600',

@@ -2,8 +2,10 @@ import { CameraCapture } from '@/components/camera-capture';
 import { DetectionResultDisplay } from '@/components/detection-result';
 import { Colors } from '@/constants/theme';
 import {
-    detectFingerspellingFromImage,
-    DetectionResult,
+  detectFingerspellingFromImage,
+  DetectionResult,
+  getFingerspellingSetupInstructions,
+  isFingerspellingApiConfigured,
 } from '@/services/fingerspellingDetection';
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -30,6 +32,8 @@ export default function ASLTranslationScreen() {
   const [currentResult, setCurrentResult] = useState<DetectionResult | null>(null);
   const [detectionHistory, setDetectionHistory] = useState<string[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
+  const apiConfigured = isFingerspellingApiConfigured();
+  const setupInstructions = getFingerspellingSetupInstructions();
 
   // Load detection history on mount
   useEffect(() => {
@@ -147,25 +151,36 @@ export default function ASLTranslationScreen() {
               <Text style={styles.instructionTitle}>How to Use</Text>
               <Text style={styles.instructionText}>
                 1. Position your hand clearly in the camera frame{'\n'}
-                2. Show your fingerspelling letter clearly{'\n'}
+                2. Show one static fingerspelling letter clearly{'\n'}
                 3. Tap the camera button to capture{'\n'}
-                4. The app will detect the letter
+                4. Your configured backend will analyze the image
               </Text>
               <Text style={styles.demoNotice}>
-                This app uses image analysis to recognize ASL fingerspelling letters in real-time.
+                Single-photo mode works best for static letters. Letters like J and Z require
+                motion, so they should be handled in the future video flow instead.
               </Text>
             </View>
 
+            {!apiConfigured && (
+              <View style={styles.setupCard}>
+                <Ionicons name="server-outline" size={28} color={Colors.light.tint} />
+                <Text style={styles.setupTitle}>Backend Setup Required</Text>
+                <Text style={styles.setupText}>{setupInstructions}</Text>
+              </View>
+            )}
+
             <View style={styles.buttonGrid}>
               <TouchableOpacity
-                style={styles.actionButton}
+                style={[styles.actionButton, !apiConfigured && styles.disabledButton]}
                 onPress={() => setCameraVisible(true)}
-                disabled={isProcessing}
+                disabled={isProcessing || !apiConfigured}
               >
                 <View style={styles.buttonIconContainer}>
                   <Ionicons name="camera" size={32} color={Colors.light.background} />
                 </View>
-                <Text style={styles.actionButtonText}>Take Picture</Text>
+                <Text style={styles.actionButtonText}>
+                  {apiConfigured ? 'Take Picture' : 'Set API URL First'}
+                </Text>
               </TouchableOpacity>
 
               <TouchableOpacity style={[styles.actionButton, styles.disabledButton]}>
@@ -200,8 +215,9 @@ export default function ASLTranslationScreen() {
             <View style={styles.infoCard}>
               <Ionicons name="help-circle" size={24} color={Colors.light.tint} />
               <Text style={styles.infoText}>
-                This prototype detects fingerspelling letters (A-Z). Each letter is recognized from
-                hand position and shape captured in the image.
+                This prototype uses Expo Go for capture and a separate backend API for image
+                inference. That lets you keep the current Expo workflow without switching to a
+                custom development client.
               </Text>
             </View>
           </ScrollView>
@@ -281,17 +297,25 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontStyle: 'italic',
   },
-  modelStatus: {
-    marginTop: 10,
-    fontSize: 12,
-    color: Colors.light.tint,
-    textAlign: 'center',
+  setupCard: {
+    backgroundColor: '#F3FBF6',
+    borderRadius: 16,
+    padding: 20,
+    marginBottom: 24,
+    borderWidth: 1,
+    borderColor: '#CDE8D6',
   },
-  modelError: {
-    marginTop: 10,
-    fontSize: 12,
-    color: '#FF6B6B',
-    textAlign: 'center',
+  setupTitle: {
+    marginTop: 12,
+    marginBottom: 8,
+    fontSize: 18,
+    fontWeight: '700',
+    color: Colors.light.text,
+  },
+  setupText: {
+    fontSize: 14,
+    lineHeight: 20,
+    color: Colors.light.gray500,
   },
   buttonGrid: {
     flexDirection: 'row',
@@ -308,7 +332,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   disabledButton: {
-    opacity: 0.6,
+    opacity: 0.65,
   },
   buttonIconContainer: {
     width: 64,

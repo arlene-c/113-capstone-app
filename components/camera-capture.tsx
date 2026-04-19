@@ -52,8 +52,9 @@ export const CameraCapture: React.FC<CameraCaptureProps> = ({
     try {
       setIsCapturing(true);
       const photo = await cameraRef.current.takePictureAsync({
-        quality: 0.8,
+        quality: 1,
         base64: false,
+        skipProcessing: false,
       });
 
       if (photo && photo.uri) {

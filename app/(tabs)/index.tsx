@@ -69,7 +69,7 @@ export default function HomeScreen() {
         {/* Info Section */}
         <View style={styles.infoSection}>
           <View style={styles.infoCard}>
-            <Ionicons name="lightbulb" size={24} color={Colors.light.tint} />
+            <Ionicons name="bulb-outline" size={24} color={Colors.light.tint} />
             <View style={styles.infoContent}>
               <ThemedText type="subtitle" style={styles.infoTitle}>Current Focus</ThemedText>
               <ThemedText style={styles.infoText}>
@@ -83,7 +83,8 @@ export default function HomeScreen() {
             <View style={styles.infoContent}>
               <ThemedText type="subtitle" style={styles.infoTitle}>Privacy</ThemedText>
               <ThemedText style={styles.infoText}>
-                All image processing happens on your device. No images are sent to external servers.
+                Photos are sent only to your configured detection backend. If you self-host it, the
+                images stay within your own network and infrastructure.
               </ThemedText>
             </View>
           </View>

@@ -21,7 +21,6 @@ export default function RootLayout() {
           options={{ 
             headerShown: false,
             presentation: 'card',
-            animationEnabled: true,
           }} 
         />
         <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />

@@ -2,7 +2,16 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from math import sqrt
+from pathlib import Path
 from typing import Sequence
+import warnings
+
+import joblib
+import numpy as np
+
+
+MODEL_PATH = Path(__file__).resolve().parent / 'models' / 'asl_landmark_classifier.joblib'
+MODEL_METADATA_PATH = Path(__file__).resolve().parent / 'models' / 'asl_landmark_classifier.json'
 
 
 @dataclass
@@ -19,11 +28,114 @@ class _Point:
     z: float = 0.0
 
 
+_trained_model = None
+_load_attempted = False
+
+
 def _distance(point_a, point_b) -> float:
     dx = point_a.x - point_b.x
     dy = point_a.y - point_b.y
     dz = getattr(point_a, 'z', 0.0) - getattr(point_b, 'z', 0.0)
     return sqrt(dx * dx + dy * dy + dz * dz)
+
+
+def _point_to_array(point) -> np.ndarray:
+    if isinstance(point, dict):
+        return np.array(
+            [float(point['x']), float(point['y']), float(point.get('z', 0.0))],
+            dtype=np.float64,
+        )
+
+    return np.array(
+        [float(point.x), float(point.y), float(getattr(point, 'z', 0.0))],
+        dtype=np.float64,
+    )
+
+
+def landmarks_to_array(landmarks: Sequence) -> np.ndarray:
+    if len(landmarks) != 21:
+        raise ValueError('Expected 21 hand landmarks.')
+
+    return np.stack([_point_to_array(point) for point in landmarks])
+
+
+def _palm_size_from_array(landmarks: np.ndarray) -> float:
+    def distance(index_a: int, index_b: int) -> float:
+        return float(np.linalg.norm(landmarks[index_a] - landmarks[index_b]))
+
+    return max(distance(0, 5), distance(0, 17), distance(5, 17), 1e-6)
+
+
+def normalized_landmarks(landmarks: Sequence) -> np.ndarray:
+    array = landmarks_to_array(landmarks)
+    array = array - array[0]
+    return array / _palm_size_from_array(array)
+
+
+def extract_landmark_features(landmarks: Sequence) -> np.ndarray:
+    array = normalized_landmarks(landmarks)
+
+    flattened = array.flatten()
+    fingertips = array[[4, 8, 12, 16, 20]].flatten()
+    wrist_distances = np.linalg.norm(array - array[0], axis=1)
+    fingertip_distances = np.array(
+        [
+            np.linalg.norm(array[4] - array[8]),
+            np.linalg.norm(array[4] - array[12]),
+            np.linalg.norm(array[8] - array[12]),
+            np.linalg.norm(array[8] - array[16]),
+            np.linalg.norm(array[12] - array[16]),
+            np.linalg.norm(array[16] - array[20]),
+        ],
+        dtype=np.float64,
+    )
+
+    return np.concatenate([flattened, fingertips, wrist_distances, fingertip_distances])
+
+
+def _load_trained_model():
+    global _trained_model, _load_attempted
+
+    if _load_attempted:
+        return _trained_model
+
+    _load_attempted = True
+    if not MODEL_PATH.exists():
+        _trained_model = None
+        return None
+
+    _trained_model = joblib.load(MODEL_PATH)
+    return _trained_model
+
+
+def get_trained_model_status() -> tuple[bool, str]:
+    if MODEL_PATH.exists():
+        return True, f'Trained classifier found at {MODEL_PATH}.'
+
+    return (
+        False,
+        f'Trained classifier not found at {MODEL_PATH}. Run train_classifier.py to create it.',
+    )
+
+
+def classify_with_trained_model(landmarks: Sequence) -> Prediction | None:
+    model = _load_trained_model()
+    if model is None:
+        return None
+
+    features = extract_landmark_features(landmarks).reshape(1, -1)
+    with warnings.catch_warnings():
+        warnings.simplefilter('ignore', RuntimeWarning)
+        probabilities = model.predict_proba(features)[0]
+    classes = getattr(model, 'classes_', None)
+    if classes is None:
+        classes = model.named_steps['clf'].classes_
+
+    best_index = int(np.argmax(probabilities))
+    return Prediction(
+        letter=str(classes[best_index]),
+        confidence=float(probabilities[best_index]),
+    )
 
 
 def _palm_size(landmarks: Sequence) -> float:
@@ -67,7 +179,7 @@ def _avg(values: Sequence[float]) -> float:
     return sum(values) / len(values)
 
 
-def classify_static_letter(landmarks: Sequence) -> Prediction:
+def heuristic_classify_static_letter(landmarks: Sequence) -> Prediction:
     if len(landmarks) != 21:
         return Prediction(letter='?', confidence=0.0, error='Invalid hand landmark data.')
 
@@ -91,7 +203,6 @@ def classify_static_letter(landmarks: Sequence) -> Prediction:
     thumb_to_palm = _normalized_distance(landmarks[4], palm_center, palm_size)
     thumb_to_index_base = _normalized_distance(landmarks[4], landmarks[5], palm_size)
     index_middle_gap = _normalized_distance(landmarks[8], landmarks[12], palm_size)
-    middle_ring_gap = _normalized_distance(landmarks[12], landmarks[16], palm_size)
     avg_finger_ratio = _avg((index_ratio, middle_ratio, ring_ratio, pinky_ratio))
 
     thumb_out = thumb_to_index_base > 0.5 or thumb_to_palm > 0.62 or thumb_ratio > 0.72
@@ -139,8 +250,6 @@ def classify_static_letter(landmarks: Sequence) -> Prediction:
     if index_up and not middle_up and not ring_up and not pinky_up and thumb_out and thumb_index_gap < 0.52:
         return Prediction(letter='G', confidence=0.58)
 
-    # Fallback: once a hand is detected, prefer the closest supported static letter over an
-    # "unsupported" error so the prototype feels more usable in Expo Go.
     if index_up and middle_up and ring_up and pinky_up:
         return Prediction(letter='B' if not thumb_out else 'C', confidence=0.55)
 
@@ -159,5 +268,13 @@ def classify_static_letter(landmarks: Sequence) -> Prediction:
     return Prediction(
         letter='?',
         confidence=0.0,
-        error='A hand was detected, but the pose does not yet match a supported static fingerspelling letter confidently. Try centering one hand, using a plain background, and starting with A, B, C, D, F, I, L, O, S, U, V, W, or Y.',
+        error='A hand was detected, but the pose does not yet match a supported static fingerspelling letter confidently.',
     )
+
+
+def classify_static_letter(landmarks: Sequence) -> Prediction:
+    model_prediction = classify_with_trained_model(landmarks)
+    if model_prediction is not None:
+        return model_prediction
+
+    return heuristic_classify_static_letter(landmarks)

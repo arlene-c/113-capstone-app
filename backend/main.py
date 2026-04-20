@@ -102,15 +102,14 @@ def _resize_for_detection(rgb_image: np.ndarray, max_dimension: int = 1280) -> n
 def _image_variants(rgb_image: np.ndarray) -> list[np.ndarray]:
     resized = _resize_for_detection(rgb_image)
     brighter = cv2.convertScaleAbs(resized, alpha=1.08, beta=10)
+    higher_contrast = cv2.convertScaleAbs(resized, alpha=1.18, beta=-8)
+    softened = cv2.GaussianBlur(resized, (3, 3), 0)
 
     return [
         resized,
-        cv2.flip(resized, 1),
-        cv2.rotate(resized, cv2.ROTATE_90_CLOCKWISE),
-        cv2.rotate(resized, cv2.ROTATE_90_COUNTERCLOCKWISE),
-        cv2.rotate(resized, cv2.ROTATE_180),
         brighter,
-        cv2.flip(brighter, 1),
+        higher_contrast,
+        softened,
     ]
 
 

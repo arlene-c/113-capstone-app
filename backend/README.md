@@ -1,14 +1,14 @@
 # ASL Fingerspelling Backend
 
-This backend is the Expo Go-compatible part of the stack. The phone captures a photo with `expo-camera`, uploads it to this API, and the API runs MediaPipe hand landmark detection plus a starter static-letter classifier.
+This backend is the Expo Go-compatible part of the stack. The phone captures a photo with `expo-camera`, uploads it to this API, and the API runs MediaPipe hand landmark detection plus a trained landmark classifier.
 
 ## What It Supports
 
 - One-hand, single-photo fingerspelling
 - Static letters only
-- Best starter coverage: `A`, `B`, `C`, `D`, `F`, `I`, `L`, `O`, `S`, `U`, `V`, `W`, `Y`
+- The classifier will return `A-Z`, but `J` and `Z` are still less semantically reliable from a single image because real ASL uses motion for those letters
 
-`J` and `Z` are intentionally out of scope here because they require motion and should be handled in the future video pipeline.
+If the trained classifier artifact is missing, the backend falls back to a heuristic landmark classifier so the API still works.
 
 ## Run It Locally
 
@@ -32,6 +32,25 @@ curl http://127.0.0.1:8000/health
 
 If you keep the model somewhere else, set `MEDIAPIPE_HAND_MODEL_PATH` before starting Uvicorn.
 
+## Train The Letter Classifier
+
+This project can train its own letter classifier from public MediaPipe landmark samples.
+
+Dataset used:
+- [sid220/asl-now-fingerspelling](https://huggingface.co/datasets/sid220/asl-now-fingerspelling)
+
+Example flow:
+
+```bash
+git clone --depth 1 https://huggingface.co/datasets/sid220/asl-now-fingerspelling /tmp/asl-now-fingerspelling
+source venv/bin/activate
+python train_classifier.py --dataset-root /tmp/asl-now-fingerspelling
+```
+
+That writes:
+- `backend/models/asl_landmark_classifier.joblib`
+- `backend/models/asl_landmark_classifier.json`
+
 ## Connect Expo Go
 
 1. Copy `.env.example` to `.env`.
@@ -43,4 +62,4 @@ Do not use `localhost` when the app runs on your phone. `localhost` points to th
 
 ## Next Upgrade
 
-This starter already analyzes the actual hand image, but it is still a rule-based classifier on top of MediaPipe landmarks. When you are ready for higher accuracy, replace `classify_static_letter()` in `classifier.py` with a trained classifier that consumes the landmarks or the cropped hand image.
+The current version already uses a trained classifier. The next upgrade from here would be collecting more real phone-captured data from your app and fine-tuning on those landmarks or cropped hand images.

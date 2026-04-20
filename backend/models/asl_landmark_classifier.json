@@ -1,0 +1,246 @@
+{
+  "model_type": "StandardScaler + MLPClassifier",
+  "trained_at": "2026-04-20T02:23:52.862848+00:00",
+  "dataset_root": "/tmp/asl-now-fingerspelling",
+  "dataset_url": "https://huggingface.co/datasets/sid220/asl-now-fingerspelling",
+  "dataset_license": "MIT",
+  "sample_count": 2122,
+  "class_count": 26,
+  "feature_count": 105,
+  "labels": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J",
+    "K",
+    "L",
+    "M",
+    "N",
+    "O",
+    "P",
+    "Q",
+    "R",
+    "S",
+    "T",
+    "U",
+    "V",
+    "W",
+    "X",
+    "Y",
+    "Z"
+  ],
+  "label_counts": {
+    "A": 65,
+    "B": 69,
+    "C": 53,
+    "D": 72,
+    "E": 57,
+    "F": 61,
+    "G": 95,
+    "H": 69,
+    "I": 68,
+    "J": 93,
+    "K": 64,
+    "L": 84,
+    "M": 88,
+    "N": 84,
+    "O": 98,
+    "P": 72,
+    "Q": 97,
+    "R": 75,
+    "S": 83,
+    "T": 68,
+    "U": 106,
+    "V": 83,
+    "W": 75,
+    "X": 106,
+    "Y": 82,
+    "Z": 155
+  },
+  "metrics": {
+    "accuracy": 0.9741176470588235,
+    "classification_report": {
+      "A": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 13.0
+      },
+      "B": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 14.0
+      },
+      "C": {
+        "precision": 1.0,
+        "recall": 0.9,
+        "f1-score": 0.9473684210526315,
+        "support": 10.0
+      },
+      "D": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 14.0
+      },
+      "E": {
+        "precision": 1.0,
+        "recall": 0.9090909090909091,
+        "f1-score": 0.9523809523809523,
+        "support": 11.0
+      },
+      "F": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 12.0
+      },
+      "G": {
+        "precision": 0.9473684210526315,
+        "recall": 0.9473684210526315,
+        "f1-score": 0.9473684210526315,
+        "support": 19.0
+      },
+      "H": {
+        "precision": 0.875,
+        "recall": 1.0,
+        "f1-score": 0.9333333333333333,
+        "support": 14.0
+      },
+      "I": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 14.0
+      },
+      "J": {
+        "precision": 1.0,
+        "recall": 0.9473684210526315,
+        "f1-score": 0.972972972972973,
+        "support": 19.0
+      },
+      "K": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 13.0
+      },
+      "L": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 17.0
+      },
+      "M": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 18.0
+      },
+      "N": {
+        "precision": 0.9411764705882353,
+        "recall": 0.9411764705882353,
+        "f1-score": 0.9411764705882353,
+        "support": 17.0
+      },
+      "O": {
+        "precision": 0.9090909090909091,
+        "recall": 1.0,
+        "f1-score": 0.9523809523809523,
+        "support": 20.0
+      },
+      "P": {
+        "precision": 1.0,
+        "recall": 0.9285714285714286,
+        "f1-score": 0.9629629629629629,
+        "support": 14.0
+      },
+      "Q": {
+        "precision": 1.0,
+        "recall": 0.9473684210526315,
+        "f1-score": 0.972972972972973,
+        "support": 19.0
+      },
+      "R": {
+        "precision": 1.0,
+        "recall": 0.8666666666666667,
+        "f1-score": 0.9285714285714286,
+        "support": 15.0
+      },
+      "S": {
+        "precision": 0.9444444444444444,
+        "recall": 1.0,
+        "f1-score": 0.9714285714285714,
+        "support": 17.0
+      },
+      "T": {
+        "precision": 1.0,
+        "recall": 0.9285714285714286,
+        "f1-score": 0.9629629629629629,
+        "support": 14.0
+      },
+      "U": {
+        "precision": 0.9130434782608695,
+        "recall": 1.0,
+        "f1-score": 0.9545454545454546,
+        "support": 21.0
+      },
+      "V": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 17.0
+      },
+      "W": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 15.0
+      },
+      "X": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 21.0
+      },
+      "Y": {
+        "precision": 0.9411764705882353,
+        "recall": 1.0,
+        "f1-score": 0.9696969696969697,
+        "support": 16.0
+      },
+      "Z": {
+        "precision": 0.967741935483871,
+        "recall": 0.967741935483871,
+        "f1-score": 0.967741935483871,
+        "support": 31.0
+      },
+      "accuracy": 0.9741176470588235,
+      "macro avg": {
+        "precision": 0.9784246972888153,
+        "recall": 0.972458619312709,
+        "f1-score": 0.9745332608610346,
+        "support": 425.0
+      },
+      "weighted avg": {
+        "precision": 0.9758120242594441,
+        "recall": 0.9741176470588235,
+        "f1-score": 0.9741260224480038,
+        "support": 425.0
+      }
+    },
+    "test_samples": 425,
+    "train_samples": 1697
+  },
+  "notes": [
+    "This is a static-image fingerspelling classifier trained on MediaPipe landmark JSON files.",
+    "J and Z are still less semantically reliable from a single image because real ASL uses motion for those letters."
+  ]
+}

@@ -1,162 +1,126 @@
-# Quick Start Guide - ASL Translation App
+# Quick Start Guide
 
-## Running the App
+## 🚀 Get Started in 5 Minutes
 
-The development server is currently running. To test the app:
-
-### Option 1: iOS Simulator
+### 1. Install Dependencies
 ```bash
-# Press 'i' in the terminal running npm start
-# Or run:
-npm run ios
+npm install
 ```
 
-### Option 2: Expo Go (Physical Device)
-1. Install Expo Go from App Store
-2. Open Expo Go app
-3. Scan the QR code from the terminal output
-4. App will load on your device
-
-### Option 3: Web Browser (Limited Features)
+### 2. Start Development Server
 ```bash
-# Press 'w' in the terminal
-# Or run:
-npm run web
+npm run dev
 ```
 
-## First Test Run
+### 3. Open Browser
+Navigate to [http://localhost:3000](http://localhost:3000)
 
-1. **Home Screen**: You'll see "ASL Translator" title with two feature cards
-2. **ASL to English Button**: Click the pastel green button to enter translation mode
-3. **Camera Screen**: You can tap "Take Picture" to test the camera
-4. **Result Display**: After taking a photo, you'll see a detected letter with confidence
+## 📱 Using the App
 
-## File Overview
+1. **Home Page**: Read about the app and features
+2. **Click "Start Detection"**: Go to the detection page
+3. **Upload Image**: Select a photo of a hand showing fingerspelling
+4. **View Result**: See the detected letter and confidence
+5. **Build History**: Upload more images to build a sequence
 
-### Key Components
-- **Home Screen** (`app/(tabs)/index.tsx`) - Main app entry point with feature buttons
-- **ASL Translation** (`app/asl-translation.tsx`) - Translation screen with camera integration
-- **Camera Component** (`components/camera-capture.tsx`) - Camera interface
-- **Detection Display** (`components/detection-result.tsx`) - Shows detected letters
+## 🎯 Features
 
-### Services
-- **Detection Service** (`services/fingerspellingDetection.ts`) - ML detection logic (currently mock)
-- **Theme** (`constants/theme.ts`) - Colors and fonts (pastel green palette)
+✅ Detects ASL fingerspelling letters (A-Z)
+✅ Shows confidence levels
+✅ Saves detection history
+✅ Works completely offline
+✅ Private (no data sent to server)
 
-## Current Status
+## 📊 What's Inside
 
-✅ **App Structure**: Fully implemented
-✅ **Navigation**: Working between screens
-✅ **UI Design**: Matches specification (pastel green, clean, minimal)
-✅ **Camera**: Integrated with permission handling
-✅ **Data Persistence**: AsyncStorage for history
-✅ **Error Handling**: Comprehensive error messages
+- **Frontend**: Next.js + React + TypeScript
+- **Detection**: MediaPipe Hand Landmarker
+- **Classification**: TensorFlow.js (placeholder, ready for custom model)
+- **Storage**: Browser localStorage
+- **Styling**: CSS Modules
 
-⏳ **Future Work**: Real ML model integration
+## 🔧 Project Structure
 
-## Customization
+```
+app/                          # Next.js pages
+├── page.tsx                  # Home page
+└── asl-translation/page.tsx # Detection page
 
-### Change Colors
-Edit `constants/theme.ts`:
-```typescript
-const pastelGreen = '#A8D5BA';
-const darkGreen = '#6B9E7A';
+components/                   # React components
+├── FileUpload.tsx
+├── DetectionResult.tsx
+└── History.tsx
+
+lib/                          # Core logic
+├── handDetection.ts          # MediaPipe + TensorFlow.js
+└── storage.ts                # localStorage management
+
+styles/                       # CSS modules
+└── *.module.css
 ```
 
-### Adjust Text
-- Home screen: `app/(tabs)/index.tsx` (search for `ThemedText`)
-- Translation screen: `app/asl-translation.tsx` (search for `ThemedText`)
+## 📚 Next Steps
 
-### Camera Settings
-In `components/camera-capture.tsx`:
-```typescript
-const photo = await cameraRef.current.takePictureAsync({
-  quality: 0.8,  // Adjust image quality
-  base64: false, // Enable for processing
-});
-```
+1. **Read the full README**: See [README.md](README.md)
+2. **Integrate custom model**: See [ML_INTEGRATION.md](ML_INTEGRATION.md)
+3. **Deploy to production**: See [DEPLOYMENT.md](DEPLOYMENT.md)
+4. **Understand changes**: See [MIGRATION.md](MIGRATION.md)
 
-## Common Issues & Solutions
+## 🆘 Common Issues
 
-### "Camera permission denied"
-- Go to Settings > Privacy > Camera
-- Allow app access to camera
+### Issue: Blank page
+- Open browser console (F12)
+- Check for errors
+- Try clearing cache: Ctrl+Shift+R
 
-### App not updating after code changes
-- Press 'r' in the terminal to reload
-- Or press 'Ctrl+C' and run `npm start` again
+### Issue: Camera/permissions not working
+- This web app uses file upload, not camera
+- Upload image files directly
 
-### "Module not found" error
-- Run `npm install`
-- Check that file paths are correct
-- Restart the dev server
+### Issue: Models not loading
+- Check Network tab in DevTools
+- Verify internet connection
+- MediaPipe models load from CDN
 
-### Performance issues
-- Close other apps on the device
-- Clear Expo cache: `npm start -- --clear`
-- Restart device if needed
+## 🚢 Build & Deploy
 
-## Development Tips
-
-1. **Use DevTools**: Press 'j' in terminal to open debugger
-2. **View Logs**: All console.log output appears in terminal
-3. **Reload App**: Press 'r' for hot reload
-4. **Toggle Menu**: Press 'm' for additional options
-5. **Clear Cache**: Run `npm start -- --clear`
-
-## Testing Checklist
-
-- [ ] App launches without errors
-- [ ] Home screen displays correctly
-- [ ] "ASL → English" button navigates properly
-- [ ] Camera opens when requested
-- [ ] Back button returns to home
-- [ ] Detection history shows detected letters
-- [ ] History clears when "Clear" is tapped
-- [ ] App works in both light and dark mode
-- [ ] All text is readable and properly styled
-
-## Next Steps
-
-1. **Real ML Integration**: See `ML_INTEGRATION_GUIDE.md`
-2. **Training Data**: Collect images for letter recognition
-3. **Model Selection**: Choose between TensorFlow.js or MediaPipe
-4. **Testing**: Validate accuracy on diverse hand poses
-5. **Optimization**: Improve performance and user experience
-
-## Useful Commands
-
+### Development
 ```bash
-# Start development server
+npm run dev
+```
+
+### Production Build
+```bash
+npm run build
 npm start
-
-# Run linter
-npm run lint
-
-# Run iOS simulator
-npm run ios
-
-# Run Android
-npm run android
-
-# Run web
-npm run web
-
-# Clean cache and rebuild
-npm start -- --clear
 ```
 
-## Get Help
+### Deploy to Vercel (Recommended)
+```bash
+npm install -g vercel
+vercel
+```
 
-- **Expo Documentation**: https://docs.expo.dev/
-- **React Native Docs**: https://reactnative.dev/
-- **App Error**: Check terminal output for detailed error messages
-- **Type Errors**: Run `npm run lint` to check TypeScript
+## 🎓 Learning Resources
 
-## Need to Stop the Server?
+- **Next.js**: https://nextjs.org/docs
+- **MediaPipe**: https://developers.google.com/mediapipe
+- **TensorFlow.js**: https://www.tensorflow.org/js
+- **React**: https://react.dev
 
-Press `Ctrl+C` in the terminal window
+## ✨ Tips
+
+- Use clear, well-lit photos for best results
+- Position hand in center of image
+- Try different letter angles if detection fails
+- Check detection history to track progress
+
+## 📞 Support
+
+- For bugs: Check console (F12) for error messages
+- For questions: See README.md and documentation
+- For ML integration: See ML_INTEGRATION.md
 
 ---
 
-**Ready to test?** Follow the instructions above to launch the app!
+**Happy detecting! 🤟**

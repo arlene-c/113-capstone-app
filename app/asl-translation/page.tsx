@@ -73,11 +73,21 @@ export default function ASLTranslationPage() {
         <Link href="/" className={styles.backButton}>
           ← Back
         </Link>
-        <h1>Fingerspelling Detection</h1>
+        <div className={styles.heading}>
+          <h1>ASL -&gt; English</h1>
+          <p>Upload one fingerspelled hand image to detect the matching English letter.</p>
+        </div>
       </div>
 
       <div className={styles.container}>
         <div className={styles.content}>
+          <div className={styles.directionLinks}>
+            <span className={styles.directionCurrent}>ASL -&gt; English</span>
+            <Link href="/english-to-asl" className={styles.directionLink}>
+              Open English -&gt; ASL
+            </Link>
+          </div>
+
           <section className={styles.uploadSection}>
             <h2>Upload Image</h2>
             <FileUpload onFileSelect={handleFileSelect} isLoading={isLoading} />

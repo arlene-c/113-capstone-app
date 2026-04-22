@@ -8,48 +8,53 @@ export default function Home() {
     <main className={styles.main}>
       <div className={styles.container}>
         <div className={styles.content}>
-          <h1 className={styles.title}>ASL Fingerspelling Detector</h1>
+          <h1 className={styles.title}>ASL Fingerspelling Translator</h1>
           
           <p className={styles.subtitle}>
-            Communicate clearly with Deaf individuals using sign language recognition
+            Translate between ASL fingerspelling and English with private, browser-based tools
           </p>
 
           <div className={styles.description}>
             <p>
-              This app uses advanced computer vision technology to recognize American Sign 
-              Language fingerspelling and translate it to English text.
+              This app supports both directions of fingerspelling translation. You can upload an ASL hand image to
+              detect the English letter, or enter an English letter to view the matching ASL handshape.
             </p>
             <p>
-              <strong>Current Features:</strong> Fingerspelling detection (A-Z)
+              <strong>Current Features:</strong> ASL -&gt; English detection and English -&gt; ASL letter display
             </p>
           </div>
 
-          <Link href="/asl-translation" className={styles.primaryButton}>
-            Start Detection
-          </Link>
+          <div className={styles.translationOptions}>
+            <Link href="/asl-translation" className={styles.primaryButton}>
+              ASL -&gt; English
+            </Link>
+            <Link href="/english-to-asl" className={styles.secondaryButton}>
+              English -&gt; ASL
+            </Link>
+          </div>
 
           <div className={styles.features}>
             <div className={styles.feature}>
-              <h3>🎯 Accurate Detection</h3>
-              <p>High-precision hand detection with MediaPipe</p>
+              <h3>🎯 ASL -&gt; English</h3>
+              <p>Upload one hand image and detect the fingerspelled letter with a trained browser model</p>
             </div>
             <div className={styles.feature}>
-              <h3>🚀 Fast Processing</h3>
-              <p>All processing happens in your browser</p>
+              <h3>🖐 English -&gt; ASL</h3>
+              <p>Type one English letter and instantly view the matching ASL fingerspelled handshape</p>
             </div>
             <div className={styles.feature}>
               <h3>🔒 Private</h3>
-              <p>Your images never leave your device</p>
+              <p>Detection stays in your browser, and reverse-translation images are bundled locally in the app</p>
             </div>
           </div>
 
           <div className={styles.instructions}>
             <h2>How to Use</h2>
             <ol>
-              <li>Click &quot;Start Detection&quot; to go to the detection page</li>
-              <li>Upload a clear photo of a hand showing a fingerspelled letter</li>
-              <li>The app will detect the letter and show the confidence level</li>
-              <li>Your detections are saved in history</li>
+              <li>Choose either ASL -&gt; English or English -&gt; ASL from the home screen</li>
+              <li>For ASL -&gt; English, upload a clear photo of one fingerspelled letter</li>
+              <li>For English -&gt; ASL, type one English letter from A-Z</li>
+              <li>If you enter something outside the current scope, the app will tell you it is not supported yet</li>
             </ol>
           </div>
         </div>

@@ -9,6 +9,11 @@
   display: flex;
   flex-direction: column;
   gap: var(--spacing-lg);
+  background: var(--color-white);
+  border: 3px solid var(--color-black);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-xl);
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.14);
 }
 
 .panel h2,
@@ -19,7 +24,7 @@
 
 .description {
   margin: 0;
-  color: var(--color-gray-dark);
+  color: var(--color-black);
 }
 
 .form {
@@ -29,7 +34,7 @@
 }
 
 .label {
-  font-weight: 600;
+  font-weight: 700;
   color: var(--color-black);
 }
 
@@ -39,6 +44,7 @@
   font-size: 1.15rem;
   text-transform: uppercase;
   background-color: var(--color-white);
+  border: 3px solid var(--color-black);
 }
 
 .actions {
@@ -48,34 +54,37 @@
 }
 
 .primaryButton {
-  background-color: var(--color-primary);
-  color: var(--color-black);
-  font-weight: 600;
+  background-color: var(--color-red);
+  color: var(--color-white);
+  font-weight: 700;
+  border: 3px solid var(--color-black);
 }
 
 .primaryButton:hover {
-  background-color: var(--color-primary-light);
+  background-color: var(--color-red-dark);
 }
 
 .secondaryButton {
-  background-color: var(--color-gray-light);
-  color: var(--color-black);
+  background-color: var(--color-blue);
+  color: var(--color-white);
+  font-weight: 700;
+  border: 3px solid var(--color-black);
 }
 
 .secondaryButton:hover {
-  background-color: var(--color-gray-medium);
+  background-color: #082f6f;
 }
 
 .helperBox {
   padding: var(--spacing-lg);
   border-radius: var(--radius-md);
-  background-color: var(--color-gray-light);
-  border-left: 4px solid var(--color-primary);
+  background-color: var(--color-surface);
+  border: 3px solid var(--color-black);
 }
 
 .helperBox p {
   margin: 0 0 var(--spacing-sm) 0;
-  color: var(--color-gray-dark);
+  color: var(--color-black);
 }
 
 .helperBox p:last-child {
@@ -88,11 +97,9 @@
   min-height: 100%;
   padding: var(--spacing-xl);
   border-radius: var(--radius-lg);
-  background:
-    radial-gradient(circle at top, rgba(183, 228, 199, 0.45), transparent 42%),
-    linear-gradient(180deg, #ffffff 0%, #f7fbf8 100%);
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  background: var(--color-white);
+  border: 3px solid var(--color-black);
+  box-shadow: inset 0 1px 0 rgba(0, 0, 0, 0.05);
 }
 
 .placeholderCard,
@@ -107,6 +114,7 @@
 .placeholderCard p,
 .unsupportedCard p {
   margin: 0;
+  color: var(--color-black);
 }
 
 .resultCard {
@@ -124,7 +132,7 @@
 
 .resultLabel {
   margin: 0;
-  color: var(--color-gray-dark);
+  color: var(--color-black);
   text-transform: uppercase;
   letter-spacing: 0.08em;
   font-size: 0.8rem;
@@ -134,7 +142,7 @@
   font-size: 3rem;
   font-weight: 700;
   line-height: 1;
-  color: var(--color-black);
+  color: var(--color-red-dark);
 }
 
 .imageFrame {
@@ -143,8 +151,8 @@
   justify-content: center;
   padding: var(--spacing-lg);
   border-radius: var(--radius-lg);
-  background-color: rgba(255, 255, 255, 0.88);
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  background-color: var(--color-surface);
+  border: 3px solid var(--color-black);
 }
 
 .signImage {
@@ -161,26 +169,25 @@
   margin: 0;
   padding: var(--spacing-md);
   border-radius: var(--radius-md);
-  background-color: #fff7e6;
-  color: #8a5b00;
+  background-color: var(--color-red);
+  color: var(--color-white);
 }
 
 .unsupportedCard {
-  background:
-    linear-gradient(180deg, #fff8f8 0%, #fff1f1 100%);
-  border: 1px solid rgba(244, 67, 54, 0.22);
+  background: #ffeaea;
+  border-color: var(--color-black);
 }
 
 .unsupportedTitle {
   font-size: var(--font-size-lg);
   font-weight: 700;
-  color: var(--color-error);
+  color: var(--color-red-dark);
   margin-bottom: var(--spacing-sm);
 }
 
 .unsupportedText,
 .unsupportedExample {
-  color: #6b2b25;
+  color: var(--color-black);
 }
 
 .unsupportedExample {

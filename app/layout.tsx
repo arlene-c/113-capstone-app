@@ -1,5 +1,5 @@
-import type { Metadata } from 'next';
 import '@/styles/globals.css';
+import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'ASL Fingerspelling Detector',
@@ -15,11 +15,7 @@ export default function RootLayout({
     <html lang="en">
       <head>
         {/* eslint-disable-next-line @next/next/no-page-custom-font */}
-        <link
-          href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600;700&display=swap"
-          rel="stylesheet"
-        />
-      </head>
+      <link href="https://fonts.googleapis.com/css2?family=Madimi+One&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet"></link>      </head>
       <body>{children}</body>
     </html>
   );

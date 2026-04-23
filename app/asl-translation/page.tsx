@@ -23,6 +23,7 @@ export default function ASLTranslationPage() {
   const [currentResult, setCurrentResult] = useState<DetectionOutcome | null>(null);
   const [historyLetters, setHistoryLetters] = useState<string[]>([]);
   const [historyEntries, setHistoryEntries] = useState<HistoryEntry[]>([]);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const refreshHistory = () => {
     const history = loadHistory();
@@ -76,11 +77,15 @@ export default function ASLTranslationPage() {
     setHistoryLetters([]);
   };
 
-  const recentEntries = historyEntries.slice(0, 3);
+  const filteredHistory = historyEntries.filter((entry) =>
+    entry.letter.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const recentEntries = searchQuery ? filteredHistory : filteredHistory.slice(0, 3);
   const averageConfidence = historyEntries.length
     ? Math.round(
-        historyEntries.reduce((total, entry) => total + entry.confidence, 0) /
-          historyEntries.length
+        (historyEntries.reduce((total, entry) => total + entry.confidence, 0) /
+          historyEntries.length) * 100
       )
     : null;
 
@@ -112,7 +117,13 @@ export default function ASLTranslationPage() {
 
           <div className="search-bar">
             <span>🔍</span>
-            <input className="search-input" placeholder="Search signs..." aria-label="Search signs" />
+            <input
+              className="search-input"
+              placeholder="Search signs..."
+              aria-label="Search signs"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
           </div>
         </header>
 
@@ -200,8 +211,10 @@ export default function ASLTranslationPage() {
               </button>
             </div>
 
-            {recentEntries.length === 0 ? (
+            {historyEntries.length === 0 ? (
               <p className={styles.cardText}>No translations yet. Upload a photo to start tracking results.</p>
+            ) : searchQuery && recentEntries.length === 0 ? (
+              <p className={styles.cardText}>No signs found matching your search.</p>
             ) : (
               <ul className={styles.recentList}>
                 {recentEntries.map((entry, index) => (

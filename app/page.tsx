@@ -1,9 +1,54 @@
 'use client';
 
+import { loadHistory } from '@/lib/storage';
 import styles from '@/styles/Home.module.css';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
 
 export default function Home() {
+  const [signsToday, setSignsToday] = useState(0);
+  const [streak, setStreak] = useState(0);
+
+  useEffect(() => {
+    const history = loadHistory();
+    
+    // Calculate signs translated today
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const todayTimestamp = today.getTime();
+    const tomorrowTimestamp = todayTimestamp + 24 * 60 * 60 * 1000;
+    
+    const todaySigns = history.filter(entry => 
+      entry.timestamp >= todayTimestamp && entry.timestamp < tomorrowTimestamp
+    ).length;
+    setSignsToday(todaySigns);
+    
+    // Calculate current streak
+    const dates = history.map(entry => {
+      const date = new Date(entry.timestamp);
+      date.setHours(0, 0, 0, 0);
+      return date.getTime();
+    });
+    
+    const uniqueDates = [...new Set(dates)].sort((a, b) => b - a); // Most recent first
+    
+    let currentStreak = 0;
+    const now = new Date();
+    now.setHours(0, 0, 0, 0);
+    let checkDate = now.getTime();
+    
+    for (const date of uniqueDates) {
+      if (date === checkDate) {
+        currentStreak++;
+        checkDate -= 24 * 60 * 60 * 1000; // Previous day
+      } else if (date < checkDate) {
+        break; // Gap in streak
+      }
+    }
+    
+    setStreak(currentStreak);
+  }, []);
+
   return (
     <main className={styles.main}>
       <div className={styles.container}>
@@ -66,11 +111,11 @@ export default function Home() {
           <div className={styles.statCard}>
             <div>
               <p className={styles.statLabel}>Signs translated today</p>
-              <p className={styles.statValue}>1,240</p>
+              <p className={styles.statValue}>{signsToday.toLocaleString()}</p>
             </div>
             <div>
               <p className={styles.statLabel}>Current streak</p>
-              <p className={styles.statValue}>7 days</p>
+              <p className={styles.statValue}>{streak} {streak === 1 ? 'day' : 'days'}</p>
             </div>
             <div>
               <p className={styles.statLabel}>Beginner mode</p>

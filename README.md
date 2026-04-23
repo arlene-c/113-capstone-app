@@ -1,6 +1,8 @@
 # ASL Fingerspelling Detector - Web App
 
 A modern web application for detecting American Sign Language (ASL) fingerspelling with high accuracy using computer vision and machine learning.
+Features I'm most proud of is the ASL -> English translation, as I was able to use computer vision and machine learning models to conduct image analysis. I like the two-way translation as well and hope to continue improving the project to implement new features. 
+
 
 ## Overview
 
@@ -117,10 +119,8 @@ The optimized build will be in `.next/`.
 
 ## Deployment
 
-### Vercel (Recommended)
-```bash
-vercel
-```
+### Render
+Deployed as web service on Render
 
 ### Other Platforms
 The app is a static Next.js app that can be deployed anywhere:
@@ -157,6 +157,7 @@ The app is a static Next.js app that can be deployed anywhere:
 - [ ] English to ASL translation
 - [ ] Performance optimizations
 - [ ] Mobile app version
+- [ ] Practice Features like flashcards, practice quizzes, sign of the day, etc.
 
 ## Contributing
 

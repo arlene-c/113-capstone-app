@@ -38,6 +38,8 @@ This web app enables clear communication between Deaf and hearing individuals by
 
 ### Installation
 
+Running Locally: 
+
 1. Install dependencies:
 ```bash
 npm install
@@ -49,6 +51,12 @@ npm run dev
 ```
 
 3. Open [http://localhost:3000](http://localhost:3000) in your browser
+
+## Deployment
+
+### Render
+Deployed as web service on Render:
+https://capstone-signbridge.onrender.com
 
 ## Usage
 
@@ -117,17 +125,6 @@ npm start
 
 The optimized build will be in `.next/`.
 
-## Deployment
-
-### Render
-Deployed as web service on Render
-
-### Other Platforms
-The app is a static Next.js app that can be deployed anywhere:
-- Netlify
-- GitHub Pages
-- AWS S3 + CloudFront
-- Any HTTP server
 
 ## Accuracy Notes
 

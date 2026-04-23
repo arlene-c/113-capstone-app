@@ -1,0 +1,39 @@
+Relevant AI prompts: 
+
+- Read SPEC.md in this project. Implement the full mobile app exactly as specified, but only the initial prototype part. Do not implement the later core features yet -- ensure that the basic foundation is working first. 
+Create all necessary files, components, and navigation, and use any external modules or services as needed. Make sure that appropriate data is persistent. 
+Avoid security risks for sensitive data.  Include proper error handling. 
+Make sure the app starts without errors and displays the home screen correctly.
+
+- Review the React Native/Expo code in this project against the spec in SPEC.md. 
+Verify whether the code actually implements the core features correctly. 
+Also check for:
+- Bugs or logic errors
+- Missing error handling
+- Code quality issues (unclear naming, repeated code, etc.)
+- Best practices for React Native or other technologies
+For instance, I've already noticed a bug when I open the app and click the camera option, it leads to an error message.
+
+Format your review as a numbered list of findings, each marked as [PASS], [FAIL], or [WARN]. 
+Be specific. Reference file names and line numbers. 
+Export the review as REVIEW.md at the root of the project.
+
+- Now I'm getting another render error when I click "take picture": element type is invalid: expected a string (for buildt in components) or a class/function (for ocmposite components) but got: object
+Check the render method of 'CameraCapture'
+
+It looks like the page is pointing me to ReactFabric-dev.js and camera-capture.tsx. Please fix this. 
+
+- Ok but I need to keep using Expo Go. Is there any way to get the native modules like react-native-fs to continue using the tensorflow hand detection model? Help me implement this detection another way if the current version doesn't work because I am sticking to Expo go
+
+- The detection is still pretty inaccurate right now. Is there actually any machine learning models being used right now? Can you explain to me how the detection and analysis of the fingerspelled letter is actually happening?
+
+- Is there a way to use Google's OpenCV library for this ML integration? can you help implement it
+
+- What do you mean build a custom dev client, can you expand on that? Is it still using Expo Go ?
+
+- Please take a look at the SPEC.md for this project and current code files. I want you to change this from a mobile app with expo go to a web app because there have been technical difficulties with implementing computer vision models for expo go mobile apps. So, essentially change the idea for the mobile app into a web app, get rid of the mobile app modules/services, and implement any webapp modules/services needed to successfully complete the hand detection analysis component of the idea. You can keep the UI similar to the current layout. Let me know if you have any clarifying questions before you begin.
+
+- I want to update the user interface and design. Please look at these wireframes and update the UI to follow this appearance (doesn't need to be super exact but please at least follow the template and colors), continuing to ensure the current functionality is still implemented correctly. Let me know if you have any clarifying questions as you proceed
+
+
+
